@@ -1,0 +1,167 @@
+{
+ "actions": [],
+ "creation": "2026-06-23 09:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "llm_section",
+  "llm_client",
+  "system_prompt",
+  "embedding_section",
+  "embedding_provider",
+  "column_break_embedding",
+  "embedding_model",
+  "embedding_api_key",
+  "chunking_section",
+  "chunk_size",
+  "column_break_chunking",
+  "chunk_overlap",
+  "retrieval_section",
+  "top_k",
+  "vector_store_type",
+  "column_break_retrieval",
+  "hybrid_search_enabled",
+  "scheduling_section",
+  "reindex_schedule"
+ ],
+ "fields": [
+  {
+   "fieldname": "llm_section",
+   "fieldtype": "Section Break",
+   "label": "LLM"
+  },
+  {
+   "fieldname": "llm_client",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "AI Client",
+   "options": "AI Client",
+   "reqd": 1
+  },
+  {
+   "fieldname": "system_prompt",
+   "fieldtype": "Long Text",
+   "label": "System Prompt"
+  },
+  {
+   "fieldname": "embedding_section",
+   "fieldtype": "Section Break",
+   "label": "Embeddings"
+  },
+  {
+   "fieldname": "embedding_provider",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Embedding Provider",
+   "options": "Google\nOpenAI",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_embedding",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "embedding_model",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Embedding Model",
+   "reqd": 1
+  },
+  {
+   "description": "Leave blank to reuse the AI Client key when the provider is the same.",
+   "fieldname": "embedding_api_key",
+   "fieldtype": "Data",
+   "label": "Embedding API Key"
+  },
+  {
+   "fieldname": "chunking_section",
+   "fieldtype": "Section Break",
+   "label": "Chunking"
+  },
+  {
+   "default": "1000",
+   "fieldname": "chunk_size",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Chunk Size",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_chunking",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "200",
+   "fieldname": "chunk_overlap",
+   "fieldtype": "Int",
+   "label": "Chunk Overlap",
+   "reqd": 1
+  },
+  {
+   "fieldname": "retrieval_section",
+   "fieldtype": "Section Break",
+   "label": "Retrieval"
+  },
+  {
+   "default": "7",
+   "description": "Number of chunks retrieved per query.",
+   "fieldname": "top_k",
+   "fieldtype": "Int",
+   "label": "Top-K Results",
+   "reqd": 1
+  },
+  {
+   "default": "FAISS",
+   "fieldname": "vector_store_type",
+   "fieldtype": "Select",
+   "label": "Vector Store",
+   "options": "FAISS",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_retrieval",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Enables keyword re-ranking on top of vector search.",
+   "fieldname": "hybrid_search_enabled",
+   "fieldtype": "Check",
+   "label": "Hybrid Search (BM25 + Vector)"
+  },
+  {
+   "fieldname": "scheduling_section",
+   "fieldtype": "Section Break",
+   "label": "Scheduling"
+  },
+  {
+   "description": "e.g. 0 2 * * 0 for weekly at 2 AM Sunday. Leave blank to disable.",
+   "fieldname": "reindex_schedule",
+   "fieldtype": "Data",
+   "label": "Reindex Schedule (Cron)"
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-06-30 16:40:24.895406",
+ "modified_by": "Administrator",
+ "module": "Frappe AI",
+ "name": "RAG Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

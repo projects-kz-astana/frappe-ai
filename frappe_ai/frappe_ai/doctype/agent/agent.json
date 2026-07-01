@@ -1,0 +1,138 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:agent_name",
+ "creation": "2026-06-27 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "agent_name",
+  "enabled",
+  "description",
+  "model_section",
+  "ai_client",
+  "agent_prompt",
+  "column_break_model",
+  "max_iterations",
+  "max_tokens",
+  "temperature",
+  "tools_section",
+  "all_tools",
+  "tools"
+ ],
+ "fields": [
+  {
+   "fieldname": "agent_name",
+   "fieldtype": "Data",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Agent Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "model_section",
+   "fieldtype": "Section Break",
+   "label": "Model"
+  },
+  {
+   "description": "An initialized AI Client. Agents support Anthropic and OpenAI clients.",
+   "fieldname": "ai_client",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "AI Client",
+   "options": "AI Client",
+   "reqd": 1
+  },
+  {
+   "description": "The system prompt this agent runs with. Stored in the Agent Prompt doctype.",
+   "fieldname": "agent_prompt",
+   "fieldtype": "Link",
+   "label": "Agent Prompt",
+   "options": "Agent Prompt"
+  },
+  {
+   "fieldname": "column_break_model",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "10",
+   "description": "Maximum tool-use loops before the agent must answer.",
+   "fieldname": "max_iterations",
+   "fieldtype": "Int",
+   "label": "Max Iterations"
+  },
+  {
+   "default": "4096",
+   "fieldname": "max_tokens",
+   "fieldtype": "Int",
+   "label": "Max Tokens"
+  },
+  {
+   "description": "Randomness 0.0-1.0. Leave 0 to use the provider default.",
+   "fieldname": "temperature",
+   "fieldtype": "Float",
+   "label": "Temperature"
+  },
+  {
+   "fieldname": "tools_section",
+   "fieldtype": "Section Break",
+   "label": "Tools"
+  },
+  {
+   "default": "1",
+   "description": "When checked, the agent can use every registered tool. Uncheck to restrict to the list below.",
+   "fieldname": "all_tools",
+   "fieldtype": "Check",
+   "label": "Allow All Tools"
+  },
+  {
+   "depends_on": "eval:!doc.all_tools",
+   "fieldname": "tools",
+   "fieldtype": "Table",
+   "label": "Allowed Tools",
+   "options": "Agent Tool"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-06-27 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Frappe AI",
+ "name": "Agent",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

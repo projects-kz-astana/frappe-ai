@@ -1,0 +1,183 @@
+{
+ "actions": [],
+ "allow_bulk_edit": 1,
+ "allow_rename": 1,
+ "autoname": "field:name1",
+ "creation": "2026-06-23 09:54:52.119440",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "credentials_section",
+  "name1",
+  "organization",
+  "model",
+  "api_key",
+  "generation_section",
+  "system_prompt",
+  "column_break_generation",
+  "temperature",
+  "max_tokens",
+  "top_p",
+  "anthropic_section",
+  "top_k",
+  "enable_thinking",
+  "thinking_budget",
+  "openai_section",
+  "reasoning_effort",
+  "google_section",
+  "thinking_level"
+ ],
+ "fields": [
+  {
+   "fieldname": "credentials_section",
+   "fieldtype": "Section Break",
+   "label": "Credentials"
+  },
+  {
+   "default": "Anthropic",
+   "fieldname": "organization",
+   "fieldtype": "Select",
+   "label": "Organization",
+   "options": "Anthropic\nOpenAI\nGoogle",
+   "reqd": 1
+  },
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "model",
+   "fieldtype": "Select",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Model"
+  },
+  {
+   "fieldname": "api_key",
+   "fieldtype": "Small Text",
+   "label": "API Key",
+   "reqd": 1
+  },
+  {
+   "fieldname": "generation_section",
+   "fieldtype": "Section Break",
+   "label": "Generation"
+  },
+  {
+   "fieldname": "system_prompt",
+   "fieldtype": "Small Text",
+   "label": "System Prompt"
+  },
+  {
+   "fieldname": "column_break_generation",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "temperature",
+   "fieldtype": "Float",
+   "label": "Temperature",
+   "description": "Randomness 0.0–1.0. Leave 0 to use the provider default."
+  },
+  {
+   "fieldname": "max_tokens",
+   "fieldtype": "Int",
+   "label": "Max Tokens",
+   "description": "Maximum output tokens. Leave 0 to use the provider default."
+  },
+  {
+   "fieldname": "top_p",
+   "fieldtype": "Float",
+   "label": "Top P",
+   "description": "Nucleus sampling 0.0–1.0. Leave 0 to use the provider default."
+  },
+  {
+   "fieldname": "anthropic_section",
+   "fieldtype": "Section Break",
+   "label": "Anthropic Options",
+   "depends_on": "eval:doc.organization=='Anthropic'"
+  },
+  {
+   "fieldname": "top_k",
+   "fieldtype": "Int",
+   "label": "Top K",
+   "depends_on": "eval:doc.organization=='Anthropic'",
+   "description": "Top-K sampling. Leave 0 to use the provider default."
+  },
+  {
+   "fieldname": "enable_thinking",
+   "fieldtype": "Check",
+   "label": "Enable Extended Thinking",
+   "depends_on": "eval:doc.organization=='Anthropic'"
+  },
+  {
+   "fieldname": "thinking_budget",
+   "fieldtype": "Int",
+   "label": "Thinking Token Budget",
+   "depends_on": "eval:doc.organization=='Anthropic' && doc.enable_thinking",
+   "description": "Minimum 1024. Tokens used for internal reasoning (counts toward max_tokens)."
+  },
+  {
+   "fieldname": "openai_section",
+   "fieldtype": "Section Break",
+   "label": "OpenAI Options",
+   "depends_on": "eval:doc.organization=='OpenAI'"
+  },
+  {
+   "fieldname": "reasoning_effort",
+   "fieldtype": "Select",
+   "label": "Reasoning Effort",
+   "options": "\nnone\nlow\nmedium\nhigh\nxhigh",
+   "depends_on": "eval:doc.organization=='OpenAI'",
+   "description": "Reasoning effort for o-series and gpt-5+ models."
+  },
+  {
+   "fieldname": "google_section",
+   "fieldtype": "Section Break",
+   "label": "Google Options",
+   "depends_on": "eval:doc.organization=='Google'"
+  },
+  {
+   "fieldname": "thinking_level",
+   "fieldtype": "Select",
+   "label": "Thinking Level",
+   "options": "\nnone\nlow\nmedium\nhigh",
+   "depends_on": "eval:doc.organization=='Google'",
+   "description": "Controls Gemini's internal reasoning depth."
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-06-23 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Frappe AI",
+ "name": "AI Client",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

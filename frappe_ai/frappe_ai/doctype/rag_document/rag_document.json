@@ -1,0 +1,129 @@
+{
+ "actions": [],
+ "autoname": "RAG-DOC-.####",
+ "creation": "2026-06-23 09:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "data_source",
+  "status",
+  "version",
+  "last_indexed_on",
+  "column_break_qldp",
+  "file",
+  "content_hash",
+  "error_section",
+  "error_log"
+ ],
+ "fields": [
+  {
+   "fieldname": "data_source",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Data Source",
+   "link_filters": "[[\"RAG Data Source\",\"source_type\",\"=\",\"PDF\"]]",
+   "options": "RAG Data Source",
+   "reqd": 1
+  },
+  {
+   "default": "Pending",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Pending\nIndexing\nIndexed\nFailed",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "version",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Version",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_indexed_on",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Last Indexed On",
+   "read_only": 1
+  },
+  {
+   "description": "Upload a PDF or file to index.",
+   "fieldname": "file",
+   "fieldtype": "Attach",
+   "label": "File"
+  },
+  {
+   "description": "SHA-256 of file content; used to skip re-indexing unchanged files.",
+   "fieldname": "content_hash",
+   "fieldtype": "Data",
+   "label": "Content Hash",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.status=='Failed'",
+   "fieldname": "error_section",
+   "fieldtype": "Section Break",
+   "label": "Error"
+  },
+  {
+   "depends_on": "eval:doc.status=='Failed'",
+   "fieldname": "error_log",
+   "fieldtype": "Long Text",
+   "label": "Error Log",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_qldp",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-06-25 13:29:35.130613",
+ "modified_by": "Administrator",
+ "module": "Frappe AI",
+ "name": "RAG Document",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [
+  {
+   "color": "Gray",
+   "title": "Pending"
+  },
+  {
+   "color": "Yellow",
+   "title": "Indexing"
+  },
+  {
+   "color": "Green",
+   "title": "Indexed"
+  },
+  {
+   "color": "Red",
+   "title": "Failed"
+  }
+ ]
+}
