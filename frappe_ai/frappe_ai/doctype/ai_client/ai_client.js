@@ -101,38 +101,33 @@ function add_test_button(frm) {
 			],
 			primary_action_label: __("Send"),
 			primary_action(values) {
-				d.disable_primary_action();
 				d.set_secondary_action_label(__("Waiting…"));
 
-				frappe.call({
+				return frappe.call({
 					method: "frappe_ai.api.chat.chat",
 					args: {
 						docname: frm.doc.name,
 						user_message: values.user_message,
 						system_prompt: values.system_prompt || null,
 					},
-					callback(r) {
-						d.enable_primary_action();
-						d.set_secondary_action_label(__("Close"));
-						if (r.message) {
-							const text = frappe.utils.escape_html(r.message.text || "");
-							const model = r.message.model || frm.doc.model;
-							const usage = r.message.usage || {};
-							const tokens = (usage.input || usage.output)
-								? `<small style="color:var(--text-muted)">↑ ${usage.input || 0} / ↓ ${usage.output || 0} tokens</small>`
-								: "";
+				}).then((r) => {
+					d.set_secondary_action_label(__("Close"));
+					if (r.message) {
+						const text = frappe.utils.escape_html(r.message.text || "");
+						const model = r.message.model || frm.doc.model;
+						const usage = r.message.usage || {};
+						const tokens = (usage.input || usage.output)
+							? `<small style="color:var(--text-muted)">↑ ${usage.input || 0} / ↓ ${usage.output || 0} tokens</small>`
+							: "";
 
-							frappe.msgprint({
-								title: __("Response · {0}", [model]),
-								message: `<pre style="white-space:pre-wrap;margin:0">${text}</pre>${tokens ? "<br>" + tokens : ""}`,
-								indicator: "green",
-							});
-						}
-					},
-					error() {
-						d.enable_primary_action();
-						d.set_secondary_action_label(__("Close"));
-					},
+						frappe.msgprint({
+							title: __("Response · {0}", [model]),
+							message: `<pre style="white-space:pre-wrap;margin:0">${text}</pre>${tokens ? "<br>" + tokens : ""}`,
+							indicator: "green",
+						});
+					}
+				}).catch(() => {
+					d.set_secondary_action_label(__("Close"));
 				});
 			},
 		});
