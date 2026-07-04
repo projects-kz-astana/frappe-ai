@@ -8,7 +8,7 @@ from frappe_ai.rag.store import load_index
 
 
 @frappe.whitelist()
-def query(question: str, data_source_name: str, session_id: str | None = None) -> dict:
+def query(question: str, data_source_name: str) -> dict:
     t_start = time.monotonic()
 
     settings = get_settings()
@@ -59,7 +59,6 @@ def query(question: str, data_source_name: str, session_id: str | None = None) -
         "doctype": "RAG Query Log",
         "data_source": data_source_name,
         "user": frappe.session.user,
-        "session_id": session_id or "",
         "question": question,
         "response": answer,
         "latency_ms": latency_ms,

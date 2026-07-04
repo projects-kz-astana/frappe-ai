@@ -44,6 +44,7 @@ def index_file_source(
 
     log_lines: list[str] = []
     processed = 0
+    failed = 0
 
     for doc_name in docs:
         rag_doc = frappe.get_doc("RAG Document", doc_name)
@@ -107,8 +108,9 @@ def index_file_source(
             set_rag_doc(doc_name, {"status": "Failed", "error_log": tb})
             log_lines.append(f"[FAIL] {doc_name}: {tb[:300]}")
             frappe.log_error(title=f"RAG: failed to index {doc_name}", message=tb)
+            failed += 1
 
-    return index, metadata, vectors, "\n".join(log_lines)
+    return index, metadata, vectors, "\n".join(log_lines), failed
 
 
 def index_doctype_source(
@@ -164,6 +166,7 @@ def index_doctype_source(
 
     log_lines: list[str] = []
     processed = 0
+    failed = 0
 
     for record in records:
         try:
@@ -210,12 +213,12 @@ def index_doctype_source(
                 title=f"RAG: failed to index {target_doctype}/{record.name}",
                 message=tb,
             )
+            failed += 1
 
-    return index, metadata, vectors, "\n".join(log_lines)
+    return index, metadata, vectors, "\n".join(log_lines), failed
 
 
-def run_index_job(rag_job_name: str) -> None:
-    job_name = rag_job_name
+def run_index_job(job_name: str) -> None:
     job = frappe.get_doc("RAG Index Job", job_name)
     try:
         set_job(job_name, {"status": "Running", "started_on": now_datetime()})
@@ -228,11 +231,11 @@ def run_index_job(rag_job_name: str) -> None:
         source_type = data_source.source_type or "PDF"
 
         if source_type == "DocType":
-            index, metadata, vectors, log = index_doctype_source(
+            index, metadata, vectors, log, failed = index_doctype_source(
                 data_source, job_name, settings, index, metadata, vectors
             )
         else:
-            index, metadata, vectors, log = index_file_source(
+            index, metadata, vectors, log, failed = index_file_source(
                 data_source, job_name, settings, index, metadata, vectors
             )
 
@@ -240,7 +243,7 @@ def run_index_job(rag_job_name: str) -> None:
             save_index(index_name, index, metadata, vectors)
 
         set_job(job_name, {
-            "status": "Completed",
+            "status": "Completed with Errors" if failed else "Completed",
             "finished_on": now_datetime(),
             "logs": log,
         })

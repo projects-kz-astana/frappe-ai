@@ -7,7 +7,6 @@
  "field_order": [
   "data_source",
   "user",
-  "session_id",
   "latency_ms",
   "question_section",
   "question",
@@ -29,12 +28,6 @@
    "label": "User",
    "options": "User",
    "in_list_view": 1,
-   "in_standard_filter": 1
-  },
-  {
-   "fieldname": "session_id",
-   "fieldtype": "Data",
-   "label": "Session ID",
    "in_standard_filter": 1
   },
   {
