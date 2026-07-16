@@ -4,7 +4,7 @@ authors = [
     { name = "Sambhav Saxena", email = "sambhavsaxena02@gmail.com"}
 ]
 description = "A central command for managing all AI operations inside Frappe Framework."
-requires-python = ">=3.14"
+requires-python = ">=3.11"
 readme = "README.md"
 dynamic = ["version"]
 dependencies = [
