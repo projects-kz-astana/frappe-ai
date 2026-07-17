@@ -12,6 +12,7 @@
   "column_break_embedding",
   "embedding_model",
   "embedding_api_key",
+  "embedding_base_url",
   "chunking_section",
   "chunk_size",
   "column_break_chunking",
@@ -70,10 +71,17 @@
   {
    "description": "Leave blank to reuse the AI Client key when the provider is the same.",
    "fieldname": "embedding_api_key",
-   "fieldtype": "Data",
-   "label": "Embedding API Key"
-  },
-  {
+    "fieldtype": "Data",
+    "label": "Embedding API Key"
+   },
+   {
+    "depends_on": "eval:doc.embedding_provider=='OpenAI'",
+    "description": "Custom endpoint for OpenAI-compatible embedding APIs.",
+    "fieldname": "embedding_base_url",
+    "fieldtype": "Data",
+    "label": "Embedding Base URL"
+   },
+   {
    "fieldname": "chunking_section",
    "fieldtype": "Section Break",
    "label": "Chunking"

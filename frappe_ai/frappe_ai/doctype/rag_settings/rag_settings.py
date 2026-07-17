@@ -14,6 +14,7 @@ class RAGSettings(Document):
 		chunk_overlap: DF.Int
 		chunk_size: DF.Int
 		embedding_api_key: DF.Data | None
+		embedding_base_url: DF.Data | None
 		embedding_model: DF.Data
 		embedding_provider: DF.Literal["Google", "OpenAI"]
 		hybrid_search_enabled: DF.Check
