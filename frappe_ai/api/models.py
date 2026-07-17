@@ -48,8 +48,7 @@ def _get_openai_models(api_key: str, base_url: str = "") -> list:
 		kwargs["base_url"] = base_url
 	client = OpenAI(**kwargs)
 	models = client.models.list()
-	allowed_prefixes = ("gpt-", "o1", "o3", "o4", "chatgpt-")
-	return sorted([m.id for m in models.data if any(m.id.startswith(p) for p in allowed_prefixes)])
+	return sorted([m.id for m in models.data])
 
 
 def _get_google_models(api_key: str) -> list:
