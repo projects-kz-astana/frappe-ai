@@ -14,6 +14,7 @@ class AIClient(Document):
 		from frappe.types import DF
 
 		api_key: DF.SmallText
+		base_url: DF.Data | None
 		enable_thinking: DF.Check
 		max_tokens: DF.Int
 		model: DF.Literal[None]
