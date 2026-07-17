@@ -15,13 +15,13 @@ def get_models_for_org(organization: str, docname: str) -> list[str]:
 	if not api_key:
 		frappe.throw("API Key is not set. Please save the document with a valid API key first.")
 
-    try:
-        if organization == "Anthropic":
-            return _get_anthropic_models(str(api_key))
-        elif organization == "OpenAI":
-            base_url = str(doc.get("base_url") or "").strip()
-            return _get_openai_models(str(api_key), base_url)
-        elif organization == "Google":
+	try:
+		if organization == "Anthropic":
+			return _get_anthropic_models(str(api_key))
+		elif organization == "OpenAI":
+			base_url = str(doc.get("base_url") or "").strip()
+			return _get_openai_models(str(api_key), base_url)
+		elif organization == "Google":
 			return _get_google_models(str(api_key))
 		else:
 			frappe.throw(f"Unsupported organization: {organization}")
