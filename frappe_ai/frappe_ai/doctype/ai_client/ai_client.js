@@ -70,6 +70,12 @@ function fetch_and_set_models(frm) {
 				});
 			}
 		},
+		error(r) {
+			frappe.show_alert({
+				message: r.message || __("Failed to fetch models. Check API key and network."),
+				indicator: "red",
+			});
+		},
 	});
 }
 
