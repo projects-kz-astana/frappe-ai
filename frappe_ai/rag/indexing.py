@@ -9,6 +9,7 @@ from frappe_ai.rag.embeddings import embed_text
 from frappe_ai.rag.settings import get_settings
 from frappe_ai.rag.store import load_index, save_index
 from frappe_ai.rag.text import chunk_text, extract_text_from_file, file_hash, text_from_doctype_record
+from frappe_ai.rag.legal_normalize import clean_legal_text
 
 
 def set_job(name: str, values: dict) -> None:
@@ -65,7 +66,18 @@ def index_file_source(
 				if entry.get("rag_document") == doc_name:
 					entry["active"] = False
 
-			text = extract_text_from_file(rag_doc.file)
+			raw_text = extract_text_from_file(rag_doc.file)
+			cleaned = clean_legal_text(raw_text)
+			set_rag_doc(
+				doc_name,
+				{
+					"site_notices": cleaned["site_notices"],
+					"legal_status": cleaned["legal_status"],
+					"revision_date": cleaned["revision_date"],
+					"amending_laws": cleaned["amending_laws"],
+				},
+			)
+			text = cleaned["text"]
 			chunks = chunk_text(text, chunk_size, overlap)
 
 			new_vectors: list[np.ndarray] = []
@@ -78,6 +90,8 @@ def index_file_source(
 						"rag_document": doc_name,
 						"data_source": ds_name,
 						"source": os.path.basename(rag_doc.file),
+						"legal_status": cleaned["legal_status"],
+						"revision_date": cleaned["revision_date"],
 						"chunk_index": i,
 						"content": chunk,
 						"active": True,

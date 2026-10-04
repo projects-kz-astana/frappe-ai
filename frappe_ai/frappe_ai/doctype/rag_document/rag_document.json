@@ -12,6 +12,12 @@
   "column_break_qldp",
   "file",
   "content_hash",
+  "legal_section",
+  "legal_status",
+  "revision_date",
+  "amending_laws",
+  "column_break_legal",
+  "site_notices",
   "error_section",
   "error_log"
  ],
@@ -63,6 +69,44 @@
    "fieldname": "content_hash",
    "fieldtype": "Data",
    "label": "Content Hash",
+   "read_only": 1
+  },
+  {
+   "fieldname": "legal_section",
+   "fieldtype": "Section Break",
+   "label": "Legal Metadata"
+  },
+  {
+   "description": "Extracted from the document text during indexing (e.g. Утративший силу / Действующий).",
+   "fieldname": "legal_status",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Legal Status",
+   "read_only": 1
+  },
+  {
+   "description": "Date of the latest revision/redaction found in the document text.",
+   "fieldname": "revision_date",
+   "fieldtype": "Date",
+   "label": "Revision Date",
+   "read_only": 1
+  },
+  {
+   "description": "Law numbers found in the text that amended this document (e.g. № 256-VIII, № 306-VIII), one per line.",
+   "fieldname": "amending_laws",
+   "fieldtype": "Small Text",
+   "label": "Amending Laws",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_legal",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Site boilerplate notices (Примечание ИЗПИ/РЦПИ, Вниманию пользователей, Сноски) stripped out of the indexed text, kept here instead of being discarded.",
+   "fieldname": "site_notices",
+   "fieldtype": "Long Text",
+   "label": "Site Notices (stripped from text)",
    "read_only": 1
   },
   {
