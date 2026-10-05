@@ -106,26 +106,33 @@ def _anthropic_chat(
 
 
 def _openai_chat(client, doc, message, system_prompt, max_tokens) -> dict:
+    # Chat Completions (not the newer Responses API) - OpenAI-compatible
+    # gateways/proxies (e.g. internal LiteLLM-based routers) often only
+    # implement this older, more universal endpoint. Responses-API calls
+    # against such a gateway can fail even when the same model works fine
+    # here (confirmed against our own bifrost gateway).
+    messages = []
+    if system_prompt:
+        messages.append({"role": "system", "content": system_prompt})
+    messages.append({"role": "user", "content": message})
+
     kwargs: dict = {
         "model": doc.model,
-        "input": message,
+        "messages": messages,
     }
-    if system_prompt:
-        kwargs["instructions"] = system_prompt
     if max_tokens:
-        kwargs["max_output_tokens"] = int(max_tokens)
+        kwargs["max_tokens"] = int(max_tokens)
 
     effort = doc.reasoning_effort or ""
     if effort and effort != "none":
-        kwargs["reasoning"] = {"effort": effort}
+        kwargs["reasoning_effort"] = effort
 
-    response = client.responses.create(**kwargs)
+    response = client.chat.completions.create(**kwargs)
+    choice = response.choices[0].message
     return {
-        "text": response.output_text or "",
+        "text": choice.content or "",
         "model": getattr(response, "model", doc.model),
-        "usage": _usage(
-            getattr(response, "usage", None), "input_tokens", "output_tokens"
-        ),
+        "usage": _usage(response.usage, "prompt_tokens", "completion_tokens"),
     }
 
 
