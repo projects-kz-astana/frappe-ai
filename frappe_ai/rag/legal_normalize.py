@@ -33,6 +33,12 @@ _LAW_NUMBER_RE = re.compile(r"№\s*\d+(?:-[IVXLC]+)?")
 _LONG_DATE_RE = re.compile(r"(\d{1,2})\s+([а-я]+)\s+(\d{4})\s*года?", re.IGNORECASE)
 _SHORT_DATE_RE = re.compile(r"\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b")
 
+# "статья/статьи/статью/статье/статей ..." (any case ending) / "ст.5" /
+# "ст. 5" -> "ст. 5" / "ст. 5-8", so different mentions of the same
+# article don't look like different tokens.
+_ARTICLE_RE = re.compile(r"\b(?:стать[а-я]{0,3}|статей)\b\.?\s*(\d+(?:\s*-\s*\d+)?)", re.IGNORECASE)
+_ARTICLE_ABBR_RE = re.compile(r"\bст\.\s*(\d+(?:\s*-\s*\d+)?)", re.IGNORECASE)
+
 _STATUS_PATTERNS = [
 	(re.compile(r"Утратил силу|Утративший силу", re.IGNORECASE), "Утратил силу"),
 	(re.compile(r"Действующ(?:ий|ая|ее)", re.IGNORECASE), "Действует"),
@@ -53,6 +59,12 @@ def _normalize_dates(text: str) -> str:
 
 	text = _LONG_DATE_RE.sub(long_to_iso, text)
 	text = _SHORT_DATE_RE.sub(short_to_iso, text)
+	return text
+
+
+def _normalize_article_refs(text: str) -> str:
+	text = _ARTICLE_RE.sub(lambda m: "ст. %s" % re.sub(r"\s*-\s*", "-", m.group(1)), text)
+	text = _ARTICLE_ABBR_RE.sub(lambda m: "ст. %s" % re.sub(r"\s*-\s*", "-", m.group(1)), text)
 	return text
 
 
@@ -89,6 +101,7 @@ def clean_legal_text(raw_text: str) -> dict:
 	amending_laws = sorted(set(_LAW_NUMBER_RE.findall(notice_source + "\n" + raw_text)))
 
 	cleaned = _normalize_dates(notice_source)
+	cleaned = _normalize_article_refs(cleaned)
 	cleaned = re.sub(r"\n{3,}", "\n\n", cleaned).strip()
 
 	notices_text = "\n".join(_normalize_dates(n) for n in notices)
